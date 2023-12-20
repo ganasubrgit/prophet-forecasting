@@ -1,0 +1,49 @@
+method = optimize
+  optimize
+    algorithm = lbfgs (Default)
+      lbfgs
+        init_alpha = 0.001 (Default)
+        tol_obj = 9.9999999999999998e-13 (Default)
+        tol_rel_obj = 10000 (Default)
+        tol_grad = 1e-08 (Default)
+        tol_rel_grad = 10000000 (Default)
+        tol_param = 1e-08 (Default)
+        history_size = 5 (Default)
+    jacobian = 0 (Default)
+    iter = 10000
+    save_iterations = 0 (Default)
+id = 1 (Default)
+data
+  file = /tmp/tmpnh3sbbls/ut7t5zo6.json
+init = /tmp/tmpnh3sbbls/uefgiay_.json
+random
+  seed = 13861
+output
+  file = /tmp/tmpnh3sbbls/prophet_model1pmzlv3u/prophet_model-20231220190744.csv
+  diagnostic_file =  (Default)
+  refresh = 100 (Default)
+  sig_figs = -1 (Default)
+  profile_file = profile.csv (Default)
+num_threads = 1 (Default)
+
+Initial log joint probability = -12.5514
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+      99       3398.46    0.00180816       150.109           1           1      131   
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+     139       3399.33   0.000155847       101.572   1.087e-06       0.001      225  LS failed, Hessian reset 
+     176       3399.71   0.000603111       141.412   4.851e-06       0.001      304  LS failed, Hessian reset 
+     199       3399.78   1.37704e-05       61.2715      0.2564           1      339   
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+     248       3399.98   0.000192759       130.037   1.776e-06       0.001      462  LS failed, Hessian reset 
+     299       3400.13   9.79806e-06       72.8848           1           1      540   
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+     364       3400.44    0.00033808       171.135   3.901e-06       0.001      672  LS failed, Hessian reset 
+     399       3400.65   1.74666e-05       72.0139     0.02197           1      720   
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+     499       3400.75   2.15832e-05       63.6594           1           1      852   
+    Iter      log prob        ||dx||      ||grad||       alpha      alpha0  # evals  Notes 
+     525       3400.79   5.05395e-05       57.8784   7.909e-07       0.001      939  LS failed, Hessian reset 
+     569       3400.83   6.10308e-06       50.4473   8.906e-08       0.001     1032  LS failed, Hessian reset 
+     577       3400.83     5.382e-07       61.9105      0.9197      0.9197     1044   
+Optimization terminated normally: 
+  Convergence detected: relative change in objective function was below tolerance
