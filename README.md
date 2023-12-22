@@ -18,4 +18,4 @@ Reference https://research.facebook.com/blog/2017/2/prophet-forecasting-at-scale
 
    `http://127.0.0.1:8888/lab?token=edb8c3ef75276103421ccdbb6ff0d3d9911c5b5b3e803531`
 
-### Run forcase using the example file in program.ipynb in this repo.
+### Run forcase using the example file in `program.ipynb` in this repo.
