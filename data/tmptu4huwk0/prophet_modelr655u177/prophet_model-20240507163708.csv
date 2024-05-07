@@ -2,7 +2,7 @@
 # stan_version_minor = 33
 # stan_version_patch = 0
 # model = prophet_model
-# start_datetime = 2023-12-22 23:27:21 UTC
+# start_datetime = 2024-05-07 16:37:08 UTC
 # method = optimize
 #   optimize
 #     algorithm = lbfgs (Default)
@@ -19,12 +19,12 @@
 #     save_iterations = 0 (Default)
 # id = 1 (Default)
 # data
-#   file = /tmp/tmp8_0ehc2x/5lu52i1_.json
-# init = /tmp/tmp8_0ehc2x/55qsssib.json
+#   file = /tmp/tmptu4huwk0/1i8zzwno.json
+# init = /tmp/tmptu4huwk0/win36nsx.json
 # random
-#   seed = 56832
+#   seed = 96797
 # output
-#   file = /tmp/tmp8_0ehc2x/prophet_modelkryptlkx/prophet_model-20231222232721.csv
+#   file = /tmp/tmptu4huwk0/prophet_modelr655u177/prophet_model-20240507163708.csv
 #   diagnostic_file =  (Default)
 #   refresh = 100 (Default)
 #   sig_figs = -1 (Default)
