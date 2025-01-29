@@ -6,7 +6,7 @@ COPY . /app
 # Install dependencies
 RUN apt-get -y update \
     && apt-get install -y tini python3-dev apt-utils build-essential && rm -rf /var/lib/apt/lists/*
-RUN pip install --upgrade setuptools cython numpy prophet jupyter jupyterlab plotly pyppeteer
+RUN pip install --upgrade setuptools cython numpy prophet jupyter jupyterlab plotly pyppeteer requests pandas argparse logging
 
 # Entrypoint with Tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
