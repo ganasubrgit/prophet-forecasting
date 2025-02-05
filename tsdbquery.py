@@ -88,3 +88,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#usage
+
+#python tsdbquery.py --endpoint "http://oass-lb-1331201622.us-east-1.elb.amazonaws.com:9004" --metric 'system_cpu_usage{container="otc-container",service="otel-daemonset-collector"}' --duration "1h"
