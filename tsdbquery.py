@@ -3,6 +3,8 @@ import csv
 import argparse
 import logging
 import time
+import pandas as pd
+from prophet import Prophet
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -25,6 +27,7 @@ def fetch_data(endpoint, metric, duration):
     else:
         logger.error(f"Failed to fetch data: {response.status_code}")
         return None
+
 
 def process_data(data):
     """Extract and process the time series data from the API response."""
@@ -52,6 +55,7 @@ def process_data(data):
     
     return processed_data
 
+
 def save_to_csv(data, filename="timeseries_data.csv"):
     """Save the processed data to a CSV file."""
     if not data:
@@ -70,6 +74,42 @@ def save_to_csv(data, filename="timeseries_data.csv"):
     
     logger.info(f"Data successfully saved to {filename}.")
 
+
+def predict_time_series(input_csv="timeseries_data.csv", output_csv="forecasted_data.csv"):
+    """Use Facebook Prophet to forecast time series data and save predictions to a CSV file."""
+    # Load the CSV data
+    try:
+        df = pd.read_csv(input_csv)
+    except FileNotFoundError:
+        logger.error(f"File {input_csv} not found.")
+        return
+
+    # Ensure the data has the correct columns
+    if 'timestamp' not in df.columns or 'cpu_count' not in df.columns:
+        logger.error("Input CSV must contain 'timestamp' and 'cpu_count' columns.")
+        return
+
+    # Rename columns for Prophet
+    df.rename(columns={'timestamp': 'ds', 'cpu_count': 'y'}, inplace=True)
+
+    # Convert ds column to datetime
+    df['ds'] = pd.to_datetime(df['ds'])
+
+    # Initialize and fit the Prophet model
+    model = Prophet()
+    model.fit(df)
+
+    # Create a DataFrame for future dates
+    future = model.make_future_dataframe(periods=10, freq='H')  # Forecasting 10 future hours
+
+    # Make predictions
+    forecast = model.predict(future)
+
+    # Save the forecast to a CSV file
+    forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].to_csv(output_csv, index=False)
+    logger.info(f"Forecasted data successfully saved to {output_csv}.")
+
+
 def main():
     """Main function to parse arguments and process the data."""
     parser = argparse.ArgumentParser(description="Query and process time series data.")
@@ -86,8 +126,13 @@ def main():
     processed_data = process_data(data)
     save_to_csv(processed_data)
 
+    # Run time series prediction
+    predict_time_series()
+
+
 if __name__ == "__main__":
     main()
+
 
 #usage
 

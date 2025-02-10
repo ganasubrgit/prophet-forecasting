@@ -1,0 +1,4 @@
+requests
+prophet
+flask
+pandas

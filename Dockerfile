@@ -1,27 +1,26 @@
-# Use the latest stable Python slim image
-FROM python:3.11-slim
+# Use the official lightweight Python image
+FROM python:3.12-slim
 
-# Set working directory
+# Set the working directory in the container
 WORKDIR /app
-COPY . /app
 
 # Install system dependencies and clean up after
 RUN apt-get -y update && \
-    apt-get install -y --no-install-recommends \
-    tini python3-dev build-essential libatlas-base-dev \
-    gfortran liblapack-dev && \
+    apt-get install -y --no-install-recommends tini && \
     rm -rf /var/lib/apt/lists/*
+
+# Copy the requirements and install dependencies
+COPY requirements.txt .
 
 # Upgrade pip and install necessary Python packages
 RUN pip install --no-cache-dir --upgrade pip setuptools cython && \
-    pip install --no-cache-dir numpy prophet jupyter jupyterlab plotly \
-    pyppeteer requests pandas argparse
+    pip install --no-cache-dir -r requirements.txt
 
-# Set Entrypoint with Tini for process handling
-ENTRYPOINT ["tini", "--"]
+# Copy the Python script and other necessary files
+COPY . .
 
-# Expose Jupyter Lab port
-EXPOSE 8888
+# Expose the port for the API
+EXPOSE 5000
 
-# Default command to run Jupyter Lab
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
+# Set the entrypoint to start the Flask server
+ENTRYPOINT ["python", "app.py"]

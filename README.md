@@ -1,21 +1,107 @@
-# prophet-forecasting
-Reference https://research.facebook.com/blog/2017/2/prophet-forecasting-at-scale/
+# Dockerized Flask Application for Prometheus Metrics Forecasting
 
-### System Requirement 
-- Docker (or) Rancher Desktop
-- MS Visual Studio Code
+This project provides a Dockerized Flask API that reads Prometheus metrics, uses Facebook Prophet for time series forecasting, and allows downloading the forecast results as a CSV file.
 
-### Build and run jupyter notebook with prophet localy with Docker
+## Features
+- Fetches time series data from Prometheus
+- Runs Prophet for time series forecasting
+- Exposes an API to trigger the forecast process
+- Provides an endpoint to download the forecast CSV file
 
-- clone the repo
-- `cd` to the repo directory 
-- `docker buildx build --tag prophet:latest --load .`
+## Prerequisites
+- Docker installed
+- Prometheus endpoint with accessible metrics
 
-### Start the container from the newly built image
-- `docker run -p 8888:8888 -v $(pwd)/data/tmp:/tmp prophet:latest`
+---
 
-### Web login to Jupyter notebook using the console printed URL with token similar as below.
+## Getting Started
 
-   `http://127.0.0.1:8888/lab?token=edb8c3ef75276103421ccdbb6ff0d3d9911c5b5b3e803531`
+### **1. Build the Docker Image**
 
-### Run forcase using the example file in `program.ipynb` in this repo.
+```bash
+docker build -t prometheus-forecast-api .
+```
+
+### **2. Run the Docker Container**
+
+```bash
+docker run -d -p 5000:5000 prometheus-forecast-api
+```
+
+---
+
+## Usage
+
+### **Trigger Forecast Process**
+
+Send a POST request to `/run-script` with the necessary parameters:
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{"endpoint": "http://oass-lb-1831201682.us-east-1.elb.amazonaws.com:9004", "metric": "system_cpu_usage{container=\"otc-container\",service=\"otel-daemonset-collector\"}", "duration": "1h"}' \
+http://localhost:5000/run-script
+```
+
+#### **Parameters:**
+- `endpoint`: URL of the Prometheus server
+- `metric`: Prometheus metric query
+- `duration`: Duration for the time series query (e.g., `1h`, `1d`)
+
+### **Download Forecast CSV**
+
+After the forecast is generated, download the CSV file:
+
+```bash
+curl -X GET http://localhost:5000/download-csv --output forecast_data.csv
+```
+
+Alternatively, open the following URL in your browser:
+
+```
+http://localhost:5000/download-csv
+```
+
+---
+
+## Example Workflow
+
+1. Build the Docker image:
+   ```bash
+   docker build -t prometheus-forecast-api .
+   ```
+2. Run the container:
+   ```bash
+   docker run -d -p 5000:5000 prometheus-forecast-api
+   ```
+3. Trigger the forecast process:
+   ```bash
+   curl -X POST -H "Content-Type: application/json" \
+   -d '{"endpoint": "http://prometheus", "metric": "system_cpu_usage{container=\"otc-container\",service=\"otel-daemonset-collector\"}", "duration": "1h"}' \
+   http://localhost:5000/run-script
+   ```
+4. Download the forecast CSV:
+   ```bash
+   curl -X GET http://localhost:5000/download-csv --output forecast_data.csv
+   ```
+
+---
+
+## Troubleshooting
+
+### **Container Not Running**
+Check the container logs:
+```bash
+docker logs <container_id>
+```
+
+### **401 Unauthorized from Prometheus**
+Ensure proper authentication is configured when accessing the Prometheus endpoint.
+
+### **Forecast File Not Found**
+Make sure the `/run-script` endpoint is called before attempting to download the CSV.
+
+---
+
+## Conclusion
+This setup provides an efficient way to fetch and forecast Prometheus metrics using Prophet, with a convenient API interface for automation and data retrieval.
+
