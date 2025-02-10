@@ -38,7 +38,7 @@ Send a POST request to `/run-script` with the necessary parameters:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" \
--d '{"endpoint": "http://oass-lb-1831201682.us-east-1.elb.amazonaws.com:9004", "metric": "system_cpu_usage{container=\"otc-container\",service=\"otel-daemonset-collector\"}", "duration": "1h"}' \
+-d '{"endpoint": "http://prometheus", "metric": "system_cpu_usage{container=\"otc-container\",service=\"otel-daemonset-collector\"}", "duration": "1h"}' \
 http://localhost:5000/run-script
 ```
 
